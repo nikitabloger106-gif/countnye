@@ -37,10 +37,10 @@ jobs:
           Xvfb :99 -screen 0 1920x1080x24 &
           sleep 2
 
-      - name: Stream to YouTube
+- name: Stream to YouTube
         env:
           STREAM_KEY: ${{ secrets.YOUTUBE_STREAM_KEY }}
         run: |
           export DISPLAY=:99
-          ffmpeg -f x11grab -video_size 1280x720 -framerate 30 -i :99.0 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -vcodec libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ar 44100 -f flv "rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY"
+          ffmpeg -f x11grab -video_size 1920x1080 -framerate 30 -i :99.0 -f lavfi -i anullsrc=channel_layout=stereo:sample_rate=44100 -vcodec libx264 -preset veryfast -maxrate 4500k -bufsize 9000k -pix_fmt yuv420p -g 60 -c:a aac -b:a 128k -ar 44100 -f flv "rtmp://a.rtmp.youtube.com/live2/$STREAM_KEY"
           
