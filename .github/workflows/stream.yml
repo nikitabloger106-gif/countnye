@@ -1,4 +1,4 @@
-name: YouTube 24/7 Stream
+name: scheduled-render
 
 on:
   workflow_dispatch:
