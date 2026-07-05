@@ -32,11 +32,13 @@ jobs:
           python3 -m http.server 8000 &
           sleep 2
 
-      - name: Launch Chrome
+- name: Launch Chrome
         run: |
           export DISPLAY=:99
           google-chrome-stable --kiosk --no-sandbox --disable-infobars \
             --autoplay-policy=no-user-gesture-required \
+            --no-first-run --no-default-browser-check \
+            --disable-features=ChromeWhatsNewUI \
             --window-size=1280,720 http://localhost:8000/index.html &
           sleep 5
 
