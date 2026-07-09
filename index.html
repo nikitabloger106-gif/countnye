@@ -47,7 +47,7 @@
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border-radius: 40px;
+            border-radius: 18px;
             border: 2px solid rgba(255, 255, 255, 0.85);
             padding: 40px;
             box-shadow: 0 0 40px 8px rgba(0, 0, 0, 0.75);
@@ -60,7 +60,7 @@
             flex-direction: column;
             justify-content: space-between;
             height: 100%;
-            border-right: 3px solid rgba(255, 255, 255, 0.15);
+            border-right: 5px solid rgba(255, 255, 255, 0.15);
             padding-right: 35px;
         }
 
@@ -176,7 +176,7 @@
         .msk-clock-widget {
             margin-top: 30px;
             padding-top: 25px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid rgba(255, 255, 255, 0.1);
         }
         .footer-clock {
             display: flex;
@@ -1104,7 +1104,7 @@
     </script>
 
     <script>
-        // ==================== CLOUDS + SNOW ====================
+        // ==================== CLOUDS + STARS ====================
         (function () {
             const canvas = document.getElementById('weather-canvas');
             const ctx = canvas.getContext('2d');
@@ -1178,65 +1178,11 @@
                 }
             }
 
-            // ---------- Snow (volumetric dots) ----------
-            function makeFlake(spawnOnScreen) {
-                const depth = Math.random(); // 0 = far/small, 1 = near/large
-                const r = 3 + depth * 5.5; // "large but not huge" dots
-                return {
-                    x: Math.random() * W,
-                    y: spawnOnScreen ? Math.random() * H : -20,
-                    r: r,
-                    depth: depth,
-                    speedY: (0.5 + depth * 1.8) * 0.55,
-                    speedX: (Math.random() - 0.5) * 0.6,
-                    sway: Math.random() * Math.PI * 2,
-                    swaySpeed: 0.005 + Math.random() * 0.012,
-                    swayAmp: 0.4 + depth * 1.0,
-                    alpha: 0.35 + depth * 0.55
-                };
-            }
-
-            const FLAKE_COUNT = 90;
-            const flakes = [];
-            for (let i = 0; i < FLAKE_COUNT; i++) flakes.push(makeFlake(true));
-
-            function drawFlake(f) {
-                ctx.save();
-                ctx.globalAlpha = f.alpha;
-                const g = ctx.createRadialGradient(
-                    f.x - f.r * 0.35, f.y - f.r * 0.35, f.r * 0.1,
-                    f.x, f.y, f.r
-                );
-                g.addColorStop(0, 'rgba(255,255,255,1)');
-                g.addColorStop(0.55, 'rgba(235,245,255,0.9)');
-                g.addColorStop(1, 'rgba(190,220,255,0.05)');
-                ctx.fillStyle = g;
-                ctx.beginPath();
-                ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-
-            function updateFlakes() {
-                for (const f of flakes) {
-                    f.sway += f.swaySpeed;
-                    f.y += f.speedY;
-                    f.x += f.speedX + Math.sin(f.sway) * f.swayAmp * 0.05;
-
-                    if (f.y - f.r > H) {
-                        Object.assign(f, makeFlake(false));
-                    }
-                    if (f.x < -20) f.x = W + 20;
-                    if (f.x > W + 20) f.x = -20;
-                }
-            }
-
             // ---------- Main loop ----------
-            // Warm up: fast-forward the simulation so, on load/refresh,
-            // the snow already looks mid-fall instead of just starting.
+            // Warm up: fast-forward the cloud simulation so, on load/refresh,
+            // the clouds already look mid-drift instead of just starting.
             for (let i = 0; i < 240; i++) {
                 updateClouds();
-                updateFlakes();
             }
 
             function loop() {
@@ -1244,11 +1190,6 @@
 
                 updateClouds();
                 for (const c of clouds) drawCloud(c);
-
-                updateFlakes();
-                // draw far (small) flakes first, near (large) on top for depth
-                flakes.sort((a, b) => a.depth - b.depth);
-                for (const f of flakes) drawFlake(f);
 
                 requestAnimationFrame(loop);
             }
