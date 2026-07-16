@@ -422,6 +422,7 @@
 
         /* === GRID GRADIENT BACKGROUND === */
         .grid-overlay {
+            display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -528,7 +529,7 @@
         }
 
         /* === BACKGROUND IMAGE OVERLAY === */
-        #bg-img-overlay {
+        #bg-img-overlay, #bg-img-overlay-2 {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
@@ -541,7 +542,7 @@
             opacity: 0;
             transition: opacity 2s ease;
         }
-        #bg-img-overlay.visible {
+        #bg-img-overlay.visible, #bg-img-overlay-2.visible {
             opacity: 1;
         }
 
@@ -729,6 +730,7 @@
 <body>
     <div class="grid-overlay"></div>
     <div id="bg-img-overlay"></div>
+    <div id="bg-img-overlay-2"></div>
     <canvas id="weather-canvas"></canvas>
     <div class="dashboard">
         <div class="sidebar-left">
@@ -1335,7 +1337,8 @@
 
         
         let bgCurrentIdx = -1;
-        const bgOverlay = document.getElementById('bg-img-overlay');
+        const bgLayers = [document.getElementById('bg-img-overlay'), document.getElementById('bg-img-overlay-2')];
+        let bgActiveLayer = 0;
         
         function getRandomBgIdx() {
             let next;
@@ -1346,16 +1349,17 @@
         }
         
         function switchBackground() {
-            // Fade out
-            bgOverlay.classList.remove('visible');
-            setTimeout(() => {
-                bgCurrentIdx = getRandomBgIdx();
-                bgOverlay.style.backgroundImage = 'url(' + BG_IMAGES[bgCurrentIdx] + ')';
-                // Fade in
-                setTimeout(() => {
-                    bgOverlay.classList.add('visible');
-                }, 50);
-            }, 2000); // wait for fade out (2s transition)
+            bgCurrentIdx = getRandomBgIdx();
+            const nextLayer = bgLayers[1 - bgActiveLayer];
+            const currentLayer = bgLayers[bgActiveLayer];
+            const img = new Image();
+            img.onload = () => {
+                nextLayer.style.backgroundImage = 'url(' + BG_IMAGES[bgCurrentIdx] + ')';
+                nextLayer.classList.add('visible');
+                currentLayer.classList.remove('visible');
+                bgActiveLayer = 1 - bgActiveLayer;
+            };
+            img.src = BG_IMAGES[bgCurrentIdx];
         }
         
         // Initial background
