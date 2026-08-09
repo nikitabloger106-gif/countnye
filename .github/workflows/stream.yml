@@ -1,4 +1,3 @@
-```yaml
 name: scheduled-render
 
 on:
@@ -91,7 +90,7 @@ jobs:
             ffmpeg \
               -f x11grab \
               -video_size 1920x1080 \
-              -framerate 15 \
+              -framerate 30 \
               -i :99.0 \
               -stream_loop -1 \
               -i music.mp3 \
@@ -100,7 +99,7 @@ jobs:
               -maxrate 3500k \
               -bufsize 7000k \
               -pix_fmt yuv420p \
-              -g 30 \
+              -g 60 \
               -c:a aac \
               -b:a 128k \
               -ar 44100 \
