@@ -91,7 +91,7 @@ jobs:
             ffmpeg \
               -f x11grab \
               -video_size 1920x1080 \
-              -framerate 30 \
+              -framerate 15 \
               -i :99.0 \
               -stream_loop -1 \
               -i music.mp3 \
@@ -110,4 +110,3 @@ jobs:
             echo "Соединение оборвалось, переподключение через 3 секунды..."
             sleep 3
           done
-```
