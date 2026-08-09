@@ -1,3 +1,4 @@
+```yaml
 name: scheduled-render
 
 on:
@@ -90,7 +91,7 @@ jobs:
             ffmpeg \
               -f x11grab \
               -video_size 1920x1080 \
-              -framerate 15 \
+              -framerate 60 \
               -i :99.0 \
               -stream_loop -1 \
               -i music.mp3 \
@@ -99,7 +100,7 @@ jobs:
               -maxrate 3500k \
               -bufsize 7000k \
               -pix_fmt yuv420p \
-              -g 30 \
+              -g 120 \
               -c:a aac \
               -b:a 128k \
               -ar 44100 \
@@ -109,3 +110,4 @@ jobs:
             echo "Соединение оборвалось, переподключение через 3 секунды..."
             sleep 3
           done
+```
