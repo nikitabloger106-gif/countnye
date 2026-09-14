@@ -90,16 +90,16 @@ jobs:
             ffmpeg \
               -f x11grab \
               -video_size 1920x1080 \
-              -framerate 30 \
+              -framerate 2 \
               -i :99.0 \
               -stream_loop -1 \
               -i music.mp3 \
               -vcodec libx264 \
               -preset veryfast \
-              -maxrate 3500k \
-              -bufsize 7000k \
+              -maxrate 1000k \
+              -bufsize 2000k \
               -pix_fmt yuv420p \
-              -g 60 \
+              -g 4 \
               -c:a aac \
               -b:a 128k \
               -ar 44100 \
