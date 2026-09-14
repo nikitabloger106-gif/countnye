@@ -2,15 +2,78 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Image</title>
+<title>Moscow Time</title>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;background:#000;overflow:hidden}
-  iframe{width:100%;height:100%;border:0;display:block}
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(180deg, #0a1330 0%, #1a2a5e 35%, #3a4a8c 60%, #7a5b8c 78%, #c97b5a 92%, #e0a15e 100%);
+    overflow: hidden;
+  }
+
+  .clock-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+
+  .clock-block {
+    background: rgba(8, 12, 28, 0.55);
+    border-radius: 28px;
+    padding: 34px 64px;
+  }
+
+  #clock {
+    font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 11vw;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 700px) {
+    #clock { font-size: 16vw; }
+    .clock-block { padding: 24px 36px; border-radius: 20px; }
+  }
 </style>
 </head>
 <body>
-<iframe src="https://brilliant-smakager-346250.netlify.app/" allowfullscreen></iframe>
+  <div class="scene">
+    <div class="clock-wrap">
+      <div class="clock-block">
+        <div id="clock">00:00:00</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  function pad(n) { return n.toString().padStart(2, '0'); }
+
+  function updateClock() {
+    const now = new Date();
+    const moscowString = now.toLocaleString('en-US', { timeZone: 'Europe/Moscow', hour12: false });
+    const moscowDate = new Date(moscowString);
+    const h = pad(moscowDate.getHours());
+    const m = pad(moscowDate.getMinutes());
+    const s = pad(moscowDate.getSeconds());
+    document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+</script>
 </body>
 </html>
